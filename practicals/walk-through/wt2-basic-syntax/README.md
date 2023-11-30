@@ -4,6 +4,8 @@ The aim of this walk-through is to introduce some basic syntax of the CSL langua
 
 CSL is a language for writing programs that run on the Cerebras Wafer Scale Engine (WSE). The syntax of CSL is similar to Zig.
 
+This program performs a very simple AXPY operation, for two vectors `x` and `y` and a scalar `a`, we compute `y = y + a*x`. 
+
 ## Types:
 
 CSL basic types:

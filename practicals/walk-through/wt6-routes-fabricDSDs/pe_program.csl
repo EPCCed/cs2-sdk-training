@@ -42,7 +42,6 @@ fn recv_left() void{
   @fadds(y_dsd, y_dsd, in_dsd, .{ .async = true, .activate = exit_task_id});
 }
 
-// Call initialize and gemv functions
 fn compute() void {
   if (pe_id == 0) {
     const a: f32 = 2.0;

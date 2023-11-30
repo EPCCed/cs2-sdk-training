@@ -13,10 +13,6 @@ const memcpy = @import_module("<memcpy/get_params>", .{
 });
 
 layout {
-
-  // The lone PE in this program should execute the code in "pe_program.csl"
-  // We pass memcpy parameters as a parameter to the program. Note that
-  // memcpy parameters are parameterized by the PE's column number.
   @set_rectangle(width, 1);
   for (@range(i16, width)) |x| {
     @set_tile_code(x, 0, "pe_program.csl", .{

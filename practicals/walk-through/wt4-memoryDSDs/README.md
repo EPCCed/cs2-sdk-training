@@ -41,3 +41,5 @@ Now we can use the DSDs with
 ```
 @fmacs(y_dsd, y_dsd, x_dsd, a)
 ```
+
+Notice we no longer need to use a loop. The `@fmacs` operation performs a multiply-add `y = y + a*x` for the entire vector.

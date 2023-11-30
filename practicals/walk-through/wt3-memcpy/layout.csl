@@ -19,10 +19,10 @@ layout {
   // memcpy parameters are parameterized by the PE's column number.
   @set_tile_code(0, 0, "pe_program.csl", .{ .memcpy_params = memcpy.get_params(0) });
 
-  // Export device symbol for array "y"
-  // Last argument is mutability: host can read y, but not write to it
-  @export_name("x", [*]f32, false);
-  @export_name("y", [*]f32, false);
+  // Export device symbol for array "x", "y"
+  // Last argument is mutability: host can read and write x, y=
+  @export_name("x", [*]f32, true);
+  @export_name("y", [*]f32, true);
 
   // Export host-callable device function
   @export_name("compute", fn()void);

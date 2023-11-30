@@ -37,7 +37,7 @@ runner.memcpy_h2d(y_symbol, y, 0, 0, 1, 1, N, streaming=False,
 
 
 # Launch the init_and_compute function on device
-runner.launch('init_and_compute', nonblock=False)
+runner.launch('compute', nonblock=False)
 
 # Copy y back from device
 # Arguments to memcpy_d2h:

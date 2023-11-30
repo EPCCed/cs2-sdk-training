@@ -26,8 +26,8 @@ layout {
 
   // Export device symbol for array "y"
   // Last argument is mutability: host can read y, but not write to it
-  @export_name("x", [*]f32, false);
-  @export_name("y", [*]f32, false);
+  @export_name("x", [*]f32, true);
+  @export_name("y", [*]f32, true);
 
   // Export host-callable device function
   @export_name("compute", fn()void);

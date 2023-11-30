@@ -30,7 +30,8 @@ fn sum(x_ptr : *[N] i16, y_ptr : *[N], value : i16) void
 
 // Call initialize and gemv functions
 fn compute() void {
-  increment(&x, &y, 2);
+  const a: f32 = 2.0;
+  sum(&x, &y, a);
 
   // After this function finishes, memcpy's cmd_stream must
   // be unblocked on all PEs for further memcpy commands

@@ -9,7 +9,7 @@ CSL is a language for writing programs that run on the Cerebras Wafer Scale Engi
 ## Comptime block
 
 ## Functions vs Tasks
-Each task ios bound to a task ID, which serves as a handle for identifying the task.
+Each task is bound to a task ID, which serves as a handle for identifying the task.
 
 The term “task identifier” or “task ID” is used to refer to a numerical value that can be associated with a task. A task ID is a number from 0 to 63. Within this range there are two properties that further distinguish a task ID: routable and activatable.
 

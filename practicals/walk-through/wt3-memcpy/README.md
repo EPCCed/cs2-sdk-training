@@ -1,3 +1,5 @@
+# Walk through 3: Memcpy
+
 Last, note that flag specifying memcpy and channels. Every program using memcpy must include the --memcpy flag. The channels flag determines the max throughput for transferring data on and off the wafer. Its value can be no larger than the width of the program rectangle, and maxes out at 16. Typically, performance improvements are minimal past 8 channels.
 
 extern & export
@@ -5,3 +7,6 @@ export symbol
 
 Remote Function Calls
 
+H2D D2H
+
+Helper functions

@@ -26,7 +26,8 @@ var y_dsd = @get_dsd(mem1d_dsd, .{ .tensor_access = |i|{N} -> y[i] });
 
 // Call initialize and gemv functions
 fn compute() void {
-  @fmacs(y_dsd, y_dsd, x_dsd, value)
+  const a: f32 = 2.0;
+  @fmacs(y_dsd, y_dsd, x_dsd, a)
   // After this function finishes, memcpy's cmd_stream must
   // be unblocked on all PEs for further memcpy commands
   // to execute

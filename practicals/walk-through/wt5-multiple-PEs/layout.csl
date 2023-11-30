@@ -1,4 +1,5 @@
-param N: i16
+param N: i16;
+param width: i16;
 
 // Color used by memcpy for RPC mechanism
 const LAUNCH: color = @get_color(8);
@@ -12,9 +13,6 @@ const memcpy = @import_module("<memcpy/get_params>", .{
 });
 
 layout {
-
-  // Use just one 1 PE (columns=1, rows=1)
-  @set_rectangle(1, 1);
 
   // The lone PE in this program should execute the code in "pe_program.csl"
   // We pass memcpy parameters as a parameter to the program. Note that

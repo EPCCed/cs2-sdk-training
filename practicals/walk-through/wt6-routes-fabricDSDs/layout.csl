@@ -1,0 +1,54 @@
+param N: i16;
+param width; i16;
+// Colors
+const send_color: color = @get_color(0); // Color used to send/recv data between PEs
+const LAUNCH:     color = @get_color(8); // Color used by memcpy for kernel launch
+
+// Task IDs
+const exit_task_id: local_task_id = @get_local_task_id(9); // Task ID used by local task
+
+
+// Import memcpy layout module for 1 x 1 grid of PEs
+// This module defines parameters passed to program on the single PE
+const memcpy = @import_module("<memcpy/get_params>", .{
+  .width = width,
+  .height = 1,
+  .LAUNCH = LAUNCH
+});
+
+layout {
+
+  // The lone PE in this program should execute the code in "pe_program.csl"
+  // We pass memcpy parameters as a parameter to the program. Note that
+  // memcpy parameters are parameterized by the PE's column number.
+  @set_rectangle(width, 1);
+
+   // Left PE (0, 0)
+  @set_tile_code(0, 0, "pe_program.csl", .{
+    .memcpy_params = memcpy.get_params(0),
+    .N = N,
+    .pe_id = 0,
+    .send_color = send_color,
+    .exit_task_id = exit_task_id
+  });
+
+  // Left PE sends its result to the right
+  @set_color_config(0, 0, send_color, .{.routes = .{ .rx = .{RAMP}, .tx = .{EAST} }});
+
+  // Right PE (1, 0)
+  @set_tile_code(1, 0, "pe_program.csl", .{
+    .memcpy_params = memcpy.get_params(1),
+    .N = N,
+    .pe_id = 1,
+    .send_color = send_color,
+    .exit_task_id = exit_task_id
+  });
+
+  // Export device symbol for array "y"
+  // Last argument is mutability: host can read y, but not write to it
+  @export_name("x", [*]f32, false);
+  @export_name("y", [*]f32, false);
+
+  // Export host-callable device function
+  @export_name("compute", fn()void);
+}

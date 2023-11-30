@@ -1,0 +1,77 @@
+param memcpy_params: comptime_struct;
+
+param nb: u16;    // array tile size, corresponds to matrix dimension
+param iters: u16; // num iterations to run matvec
+
+const EXIT:   local_task_id = @get_local_task_id(9);  // entrypoint to leave RPC
+
+// alignment calculation
+const pad_align:   u16 = 16;
+const elem_size:   u16 = 4;
+const align_ratio: u16 = pad_align / elem_size;
+const padded_nb:   u16 = if ((nb / align_ratio) * align_ratio == nb) nb
+                         else (nb / align_ratio + 1) * align_ratio;
+
+const sys_mod = @import_module("<memcpy/memcpy>", memcpy_params);
+
+var A_array: [nb*padded_nb+1]f32 align(16) = @zeros([nb*padded_nb+1]f32);
+var x_array: [nb]f32 align(16) = @zeros([nb]f32);
+var y_array: [padded_nb]f32 align(16) = @zeros([padded_nb]f32);
+var ptr_A: [*]f32 = &A_array;
+var ptr_x: [*]f32 = &x_array;
+var ptr_y: [*]f32 = &y_array;
+
+var A_dsd = @get_dsd(mem1d_dsd, .{ .tensor_access = |i|{padded_nb} -> A_array[i+1] });
+var x_dsd = @get_dsd(mem1d_dsd, .{ .tensor_access = |i|{nb} -> x_array[i] });
+var y_dsd = @get_dsd(mem1d_dsd, .{ .tensor_access = |i|{padded_nb} -> y_array[i] });
+
+const y_dest_dsr = @get_dsr(dsr_dest, 0);
+const y_src0_dsr = @get_dsr(dsr_src0, 0);
+const A_src1_dsr = @get_dsr(dsr_src1, 0);
+
+fn gemv_static_step_A(curX: f32) void {
+  @fmacs(y_dest_dsr, y_src0_dsr, A_src1_dsr, curX);
+}
+
+
+fn gemv_map() void {
+
+  // COMPUTE //
+  /////////////
+
+  // A * X = Y
+  ////////////
+
+  var local_A_dsd: mem1d_dsd = A_dsd;
+  var local_y_dsd: mem1d_dsd = y_dsd;
+  @load_to_dsr(y_dest_dsr, local_y_dsd, .{ .save_address = false });
+  @load_to_dsr(y_src0_dsr, local_y_dsd, .{ .save_address = false });
+  @load_to_dsr(A_src1_dsr, local_A_dsd, .{ .save_address = true });
+  @map(gemv_static_step_A, x_dsd);
+}
+
+
+fn compute() void {
+
+  for (@range(u16, iters)) |iter| {
+    gemv_map();
+  }
+  @activate(EXIT);
+}
+
+
+task f_exit() void {
+  // the user must unblock cmd color for every PE
+  sys_mod.unblock_cmd_stream();
+}
+
+
+comptime {
+  @bind_local_task(f_exit, EXIT);
+
+  @export_symbol(ptr_A, "A");
+  @export_symbol(ptr_x, "x");
+  @export_symbol(ptr_y, "y");
+  @export_symbol(compute);
+  @rpc(@get_data_task_id(sys_mod.LAUNCH));
+}

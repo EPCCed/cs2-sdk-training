@@ -1,0 +1,49 @@
+param memcpy_params: comptime_struct;
+
+// Matrix dimensions
+param M: i16;
+param N: i16;
+
+// memcpy module provides infrastructure for copying data
+// and launching functions from the host
+const sys_mod = @import_module("<memcpy/memcpy>", memcpy_params);
+
+
+// 48 kB of global memory contain A, x, b, y
+var A: [M*N]f32; // A is stored row major
+var x: [N]f32;
+var b: [M]f32;
+var y: [M]f32;
+
+
+// ptrs to A, x, b, y will be advertised as symbols to host
+var A_ptr: [*]f32 = &A;
+var x_ptr: [*]f32 = &x;
+var b_ptr: [*]f32 = &b;
+const y_ptr: [*]f32 = &y;
+
+// Compute gemv
+fn gemv() void {
+  for (@range(i16, M)) |i| {
+    var tmp: f32 = 0.0;
+    for (@range(i16, N)) |j| {
+      tmp += A[i*N + j] * x[j];
+    }
+    y[i] = tmp + b[i];
+  }
+}
+
+// Call initialize and gemv functions
+fn init_and_compute() void {
+  gemv();
+  sys_mod.unblock_cmd_stream();
+}
+
+comptime {
+  @export_symbol(A_ptr, "A");
+  @export_symbol(x_ptr, "x");
+  @export_symbol(b_ptr, "b");
+  @export_symbol(y_ptr, "y");
+  @export_symbol(init_and_compute);
+  @rpc(@get_data_task_id(sys_mod.LAUNCH));
+}

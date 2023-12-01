@@ -1,4 +1,4 @@
-// Parameters can be passed from command line
+// Parameters can be passed from compilation command line
 // N: array size
 // width: Number of PE columns
 param N: i16;
@@ -8,7 +8,7 @@ param width: i16;
 const LAUNCH: color = @get_color(8);
 
 // Import memcpy layout module for (width=2) x 1 grid of PEs
-// This module defines parameters passed to program on the single PE
+// This module defines parameters passed to program on the 2 PEs
 const memcpy = @import_module("<memcpy/get_params>", .{
   .width = width,
   .height = 1,

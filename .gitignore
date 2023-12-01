@@ -1,0 +1,5 @@
+**/out
+**/sim.log
+**/simfab_traces
+**/wio_flow.json
+**/simconfig.json

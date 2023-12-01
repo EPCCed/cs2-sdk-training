@@ -36,22 +36,25 @@ y_symbol = runner.get_id('y')
 runner.load()
 runner.run()
 
-###### TO DO 1: ######
 # Copy A, x, b to device
-# Hint: Use runner.memcpy_h2d(...)
+runner.memcpy_h2d(A_symbol, A, 0, 0, 1, 1, M*N, streaming=False,
+  order=MemcpyOrder.ROW_MAJOR, data_type=MemcpyDataType.MEMCPY_32BIT, nonblock=False)
+runner.memcpy_h2d(x_symbol, x, 0, 0, 1, 1, N, streaming=False,
+  order=MemcpyOrder.ROW_MAJOR, data_type=MemcpyDataType.MEMCPY_32BIT, nonblock=False)
+runner.memcpy_h2d(b_symbol, b, 0, 0, 1, 1, M, streaming=False,
+  order=MemcpyOrder.ROW_MAJOR, data_type=MemcpyDataType.MEMCPY_32BIT, nonblock=False)
 
 # Launch the init_and_compute function on device
 runner.launch('init_and_compute', nonblock=False)
 
+# Copy y back from device
 y_result = np.zeros([M], dtype=np.float32)
-
-###### TO DO 2: ######
-# Copy y back from device to y_result
-# Hint: Use runner.memcpy_d2h(...)
+runner.memcpy_d2h(y_result, y_symbol, 0, 0, 1, 1, M, streaming=False,
+  order=MemcpyOrder.ROW_MAJOR, data_type=MemcpyDataType.MEMCPY_32BIT, nonblock=False)
 
 # Stop the program
 runner.stop()
-
+print(y_expected)
 # Ensure that the result matches our expectation
 np.testing.assert_allclose(y_result, y_expected, atol=0.01, rtol=0)
 print("SUCCESS!")

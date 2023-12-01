@@ -1,0 +1,65 @@
+param memcpy_params: comptime_struct;
+
+// ====== TO DO 1: ======
+// Define parameters for matrix dimensions
+// M and N (type i16:)
+
+// memcpy module provides infrastructure for copying data
+// and launching functions from the host
+const sys_mod = @import_module("<memcpy/memcpy>", memcpy_params);
+
+
+// 48 kB of global memory contain A, x, b, y
+var A: [M*N]f32; // A is stored row major
+var x: [N]f32;
+var b: [M]f32;
+var y: [M]f32;
+
+// ptrs to A, x, b, y will be advertised as symbols to host
+var A_ptr: [*]f32 = &A;
+var x_ptr: [*]f32 = &x;
+var b_ptr: [*]f32 = &b;
+const y_ptr: [*]f32 = &y;
+
+
+// ====== TO DO 2: ======
+// Construct gemv() function
+//
+// Option 1 (simpler): use nested for-loops to sum over each row
+//               Hint: i in M, j in N, inner loop with tmp += A[i*N + j] * x[j]
+//
+// Option 2  (harder): use memory DSDs to perform the matrix operation
+//               Hint: 1. define the memory DSDs for A, b, y.
+//                   :    Tensor access for b and y should sequential `|i|{M} -> b[i]`
+//                   :    Tensor access for A should access columns `|i|{M} -> A[i*N]`
+//                   : 2. in the gemv() function, have a single for-loop over all columns (i in N)
+//                   :    use @fmacs(dest_dsd, src_dsd1, src_dsd2, f32_value) 
+//                   :     (dest_dsd = src_dsd1 + f32_value * src_dsd2)
+//                   :    Use this to calculate contribution to A*x from i-th
+//                   :    column of A, i-th element of x
+//                   : 3. use `A_dsd = @increment_dsd_offset(A_dsd, 1, f32)`
+//                   :    to move A_dsd to the next column of a
+//                   : 4. use @fadds(dest_dsd, src_dsd1, src_dsd2)
+//                   :    to add b to y
+
+// (If option 2): define DSDs for accessing A, b, y
+
+// Compute gemv
+fn gemv() void {
+
+}
+
+// Call initialize and gemv functions
+fn init_and_compute() void {
+  gemv();
+  sys_mod.unblock_cmd_stream();
+}
+
+comptime {
+  @export_symbol(A_ptr, "A");
+  @export_symbol(x_ptr, "x");
+  @export_symbol(b_ptr, "b");
+  @export_symbol(y_ptr, "y");
+  @export_symbol(init_and_compute);
+  @rpc(@get_data_task_id(sys_mod.LAUNCH));
+}

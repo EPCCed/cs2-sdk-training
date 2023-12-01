@@ -1,0 +1,46 @@
+// matrix dimensions on each PE
+param M: i16;
+param N: i16;
+
+// Colors
+const send_color: color = @get_color(0); // Color used to send/recv data between PEs
+const LAUNCH:     color = @get_color(8); // Color used by memcpy for kernel launch
+
+// Task IDs
+const exit_task_id: local_task_id = @get_local_task_id(9); // Task ID used by local task
+
+// This example only uses 2 PEs
+const memcpy = @import_module("<memcpy/get_params>", .{
+  .width = 2,
+  .height = 1,
+  .LAUNCH = LAUNCH
+});
+
+layout {
+  // PE coordinates are (column, row)
+  @set_rectangle(2, 1);
+
+  // ====== TO DO 1: ======
+  // Set tile codes for Left PE (0, 0) and Right PE (1, 0)
+  // Hint: for left tile code, use .memcpy_params = memcpy.get_params(0),
+  //     : and for right tile code, use memcpy.get_params(1)
+  //     : the remaining parameters include (M, N_per_PE, pe_id, send_color, exit_task_id)
+
+  @set_tile_code(0, 0, ... );
+  @set_tile_code(1, 0, ... );
+
+  // ====== TO DO 2: ======
+  // Set color config for Left PE (0, 0) and Right PE (1, 0)
+  // Hint: for left tile code, use the routes should have RAMP as rx, EAST for tx
+  //     : for rigiht tile code, use WEST as rx, RAMP as tx=
+
+  @set_color_config(0, 0, ...);
+  @set_color_config(1, 0, ...);
+
+
+  // export symbol names
+  @export_name("A", [*]f32, true);
+  @export_name("x", [*]f32, true);
+  @export_name("y", [*]f32, true);
+  @export_name("compute", fn()void);
+}

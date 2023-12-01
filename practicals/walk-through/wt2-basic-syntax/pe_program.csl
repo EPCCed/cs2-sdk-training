@@ -8,7 +8,7 @@ const sys_mod = @import_module("<memcpy/memcpy>", memcpy_params);
 // Constants definining dimensions of our matrix
 const N: i16 = 3;
 
-// 48 kB of global memory contain y
+// 48 kB of global memory contain x, y
 var x: [N] f32;
 var y: [N]f32;
 
@@ -17,14 +17,17 @@ var y: [N]f32;
 const y_ptr: [*]f32 = &y;
 
 
-
-fn sum(x_ptr : *[N] i16, y_ptr : *[N], value : i16) void
+// Function for summing two array from pointers
+fn sum(x_ptr : *[N] f32, y_ptr : *[N] f32, value : f32) void
 {
+    // For-loop syntax:
     for (@range(i16, N)) |idx| {
+      // De-referencing pointers:
       y_ptr.*[idx] += value * x_ptr.*[idx];
   }
 }
 
+// Function for initializing x and y arrays
 fn initialize() void {
     for (@range(i16, N)) |idx| {
       x[idx] = 1.0;
@@ -33,10 +36,10 @@ fn initialize() void {
 }
 
 
-// Call initialize and gemv functions
+// Call initialize and sum functions
 fn init_and_compute() void {
   initialize();
-  sum(&x, &y, 2);
+  sum(&x, &y, 2.0);
 
   // After this function finishes, memcpy's cmd_stream must
   // be unblocked on all PEs for further memcpy commands

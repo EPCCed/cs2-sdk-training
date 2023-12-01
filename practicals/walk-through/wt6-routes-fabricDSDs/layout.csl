@@ -1,5 +1,9 @@
+// Parameters can be passed from compilation command line
+// N: array size
+// width: Number of PE columns
 param N: i16;
-param width; i16;
+param width: i16;
+
 // Colors
 const send_color: color = @get_color(0); // Color used to send/recv data between PEs
 const LAUNCH:     color = @get_color(8); // Color used by memcpy for kernel launch
@@ -8,8 +12,8 @@ const LAUNCH:     color = @get_color(8); // Color used by memcpy for kernel laun
 const exit_task_id: local_task_id = @get_local_task_id(9); // Task ID used by local task
 
 
-// Import memcpy layout module for 1 x 1 grid of PEs
-// This module defines parameters passed to program on the single PE
+// Import memcpy layout module for (width=2) x 1 grid of PEs
+// This module defines parameters passed to program on the 2 PEs
 const memcpy = @import_module("<memcpy/get_params>", .{
   .width = width,
   .height = 1,
@@ -18,9 +22,7 @@ const memcpy = @import_module("<memcpy/get_params>", .{
 
 layout {
 
-  // The lone PE in this program should execute the code in "pe_program.csl"
-  // We pass memcpy parameters as a parameter to the program. Note that
-  // memcpy parameters are parameterized by the PE's column number.
+  // set rectangle for 2x1 PEs
   @set_rectangle(width, 1);
 
    // Left PE (0, 0)
@@ -43,9 +45,11 @@ layout {
     .send_color = send_color,
     .exit_task_id = exit_task_id
   });
+  
+  // Right PE receives result of left PE
+  @set_color_config(1, 0, send_color, .{.routes = .{ .rx = .{WEST}, .tx = .{RAMP} }});
 
-  // Export device symbol for array "y"
-  // Last argument is mutability: host can read y, but not write to it, x is read/write
+  // Export device symbol for array "x", "y"
   @export_name("x", [*]f32, true);
   @export_name("y", [*]f32, false);
 

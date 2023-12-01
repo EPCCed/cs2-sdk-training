@@ -12,12 +12,10 @@ param N: i16;
 var x: [N]f32;
 var y: [N]f32;
 
-// Ptr to y will be exported as symbol to host
-// Ptr is const, so host can read but not write to y
-const x_ptr: [*]f32 = &y;
-const y_ptr: [*]f32 = &y;
+var x_ptr: [*]f32 = &x;
+var y_ptr: [*]f32 = &y;
 
-
+// DSDs for accessing x, y
 var x_dsd = @get_dsd(mem1d_dsd, .{ .tensor_access = |i|{N} -> x[i] });
 var y_dsd = @get_dsd(mem1d_dsd, .{ .tensor_access = |i|{N} -> y[i] });
 
@@ -27,7 +25,7 @@ var y_dsd = @get_dsd(mem1d_dsd, .{ .tensor_access = |i|{N} -> y[i] });
 // Call initialize and gemv functions
 fn compute() void {
   const a: f32 = 2.0;
-  @fmacs(y_dsd, y_dsd, x_dsd, a)
+  @fmacs(y_dsd, y_dsd, x_dsd, a);
   // After this function finishes, memcpy's cmd_stream must
   // be unblocked on all PEs for further memcpy commands
   // to execute
@@ -36,7 +34,7 @@ fn compute() void {
 
 
 comptime {
-  // Export symbol pointing to y so it is host-readable
+  // Export symbol pointing to x, y
   @export_symbol(x_ptr, "x");
   @export_symbol(y_ptr, "y");
 

@@ -19,7 +19,7 @@ layout {
   // memcpy parameters are parameterized by the PE's column number.
   @set_tile_code(0, 0, "pe_program.csl", .{ .memcpy_params = memcpy.get_params(0) });
 
-  // Export device symbol for array "y"
+  // Export device symbol for array "x", "y"
   @export_name("x", [*]f32, true);
   @export_name("y", [*]f32, true);
 

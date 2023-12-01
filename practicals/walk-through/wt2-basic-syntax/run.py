@@ -8,10 +8,10 @@ from cerebras.sdk.runtime.sdkruntimepybind import SdkRuntime, MemcpyDataType, Me
 # Read arguments
 parser = argparse.ArgumentParser()
 parser.add_argument('--name', help="the test compile output dir")
-parser.add_argument('--cmaddr', help="IP:port for CS system")
+parser.add_argument('--cmaddr', help="IP:port for CS system") # (Optional)
 args = parser.parse_args()
 
-# Matrix dimensions
+# Array size
 N = 3
 
 
@@ -42,7 +42,8 @@ runner.memcpy_d2h(y_result, y_symbol, 0, 0, 1, 1, N, streaming=False,
 # Stop the program
 runner.stop()
 
-expected_y = [0, 1, 2] + 2 * [1, 1, 1]
+# Calculate expected result
+expected_y = np.array([0., 1., 2.]) + 2 * np.array([1., 1., 1.])
 
 # Ensure that the result matches our expectation
 np.testing.assert_allclose(y_result, expected_y, atol=0.01, rtol=0)

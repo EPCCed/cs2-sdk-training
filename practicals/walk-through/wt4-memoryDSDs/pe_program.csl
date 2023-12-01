@@ -5,29 +5,34 @@ param memcpy_params: comptime_struct;
 // and launching functions from the host
 const sys_mod = @import_module("<memcpy/memcpy>", memcpy_params);
 
-// Constants definining dimensions of our matrix
+// Constants definining dimensions of our array
 const N: i16 = 3;
 
-// 48 kB of global memory contain y
+// 48 kB of global memory contain x, y
 var x: [N] f32;
 var y: [N]f32;
 
-// Ptr to y will be exported as symbol to host
-// Ptr is const, so host can read but not write to y
-const x_ptr: [*]f32 = &y;
-const y_ptr: [*]f32 = &y;
+// Ptr to x, y will be exported as symbol to host
+var x_ptr: [*]f32 = &x;
+var y_ptr: [*]f32 = &y;
 
-
+// DSDs for accessing x, y
+// .tensor_access field defines the access pattern of these DSD
+// |i| specifies the induction variable
+// {N} specifies the loop bound
 var x_dsd = @get_dsd(mem1d_dsd, .{ .tensor_access = |i|{N} -> x[i] });
 var y_dsd = @get_dsd(mem1d_dsd, .{ .tensor_access = |i|{N} -> y[i] });
 
 
 
 
-// Call initialize and gemv functions
+// Call initialize and new sum functions
 fn compute() void {
   const a: f32 = 2.0;
-  @fmacs(y_dsd, y_dsd, x_dsd, a)
+
+  // @fmacs is a builtin for multiply-add that operates on DSDs
+  @fmacs(y_dsd, y_dsd, x_dsd, a);
+
   // After this function finishes, memcpy's cmd_stream must
   // be unblocked on all PEs for further memcpy commands
   // to execute
@@ -35,7 +40,7 @@ fn compute() void {
 }
 
 comptime {
-  // Export symbol pointing to y so it is host-readable
+  // Export symbol pointing to x, y
   @export_symbol(x_ptr, "x");
   @export_symbol(y_ptr, "y");
 

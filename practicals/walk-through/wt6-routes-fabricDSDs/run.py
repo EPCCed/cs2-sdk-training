@@ -23,7 +23,7 @@ N = int(compile_data['params']['N'])
 x = np.full(shape=N, fill_value=1.0, dtype=np.float32)
 
 # Calculate expected y
-y_expected = 2*x + [1., 1., 1.]
+y_expected = 2*x + np.array([1., 1., 1.])
 
 # Construct a runner using SdkRuntime
 runner = SdkRuntime(args.name, cmaddr=args.cmaddr)
@@ -51,7 +51,6 @@ runner.memcpy_d2h(y_result, y_symbol, 1, 0, 1, 1, N, streaming=False,
 
 # Stop the program
 runner.stop()
-
 # Ensure that the result matches our expectation
 np.testing.assert_allclose(y_result, y_expected, atol=0.01, rtol=0)
 print("SUCCESS!")

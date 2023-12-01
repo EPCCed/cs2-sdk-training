@@ -20,7 +20,9 @@ layout {
   @set_tile_code(0, 0, "pe_program.csl", .{ .memcpy_params = memcpy.get_params(0) });
 
   // Export device symbol for array "x", "y"
-  // Last argument is mutability: host can read and write x, y=
+  // Last argument is mutability: 
+  // true = read + write
+  // fase = read only
   @export_name("x", [*]f32, true);
   @export_name("y", [*]f32, true);
 

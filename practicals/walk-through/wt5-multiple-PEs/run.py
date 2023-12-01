@@ -12,22 +12,20 @@ parser.add_argument('--name', help="the test compile output dir")
 parser.add_argument('--cmaddr', help="IP:port for CS system")
 args = parser.parse_args()
 
-# Get matrix dimensions from compile metadata
+# Get array size from compile metadata
 with open(f"{args.name}/out.json", encoding='utf-8') as json_file:
   compile_data = json.load(json_file)
 
-# Matrix dimensions
+# Array size
 N = int(compile_data['params']['N'])
 
 # Number of PEs in program
 width = int(compile_data['params']['width'])
 
-# Construct A, x, b
+# Construct x, y
 x = np.full(shape=N, fill_value=1.0, dtype=np.float32)
 y = np.full(shape=N, fill_value=1.0, dtype=np.float32)
 
-# Calculate expected y
-y_expected = y + 2*x
 
 # Construct a runner using SdkRuntime
 runner = SdkRuntime(args.name, cmaddr=args.cmaddr)
@@ -46,7 +44,7 @@ runner.memcpy_h2d(x_symbol, np.tile(x, width), 0, 0, width, 1, N, streaming=Fals
 runner.memcpy_h2d(y_symbol, np.tile(y, width), 0, 0, width, 1, N, streaming=False,
   order=MemcpyOrder.ROW_MAJOR, data_type=MemcpyDataType.MEMCPY_32BIT, nonblock=False)
 
-# Launch the init_and_compute function on device
+# Launch the compute function on device
 runner.launch('compute', nonblock=False)
 
 # Copy y back from device
@@ -56,6 +54,9 @@ runner.memcpy_d2h(y_result, y_symbol, 0, 0, width, 1, N, streaming=False,
 
 # Stop the program
 runner.stop()
+
+# Calculate expected result
+y_expected = y + 2*x
 
 # Ensure that the result matches our expectation
 np.testing.assert_allclose(y_result, np.tile(y_expected, width), atol=0.01, rtol=0)

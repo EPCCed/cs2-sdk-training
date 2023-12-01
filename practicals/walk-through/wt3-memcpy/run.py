@@ -11,14 +11,14 @@ parser.add_argument('--name', help="the test compile output dir")
 parser.add_argument('--cmaddr', help="IP:port for CS system")
 args = parser.parse_args()
 
-# Matrix dimensions
+# Array size
 N = 3
 
 
 # Construct a runner using SdkRuntime
 runner = SdkRuntime(args.name, cmaddr=args.cmaddr)
 
-# Get symbol for copying y result off device
+# Get symbol for copying x, y onto and off device
 x_symbol = runner.get_id('x')
 y_symbol = runner.get_id('y')
 
@@ -27,7 +27,13 @@ runner.load()
 runner.run()
 
 
-# Copy y to device
+# Copy x and y to device
+# Arguments to memcpy_h2d:
+# - x_symbol is symbol of device tensor to receive
+# - x is the array on host to be sent to device
+# - 0, 0, 1, 1 are (starting x-coord, starting y-coord, width, height)
+#   of rectangle of PEs whose data is to be copied
+# - N is number of elements to be copied from each PE
 y = np.full(shape=N, fill_value=1.0, dtype=np.float32)
 x = np.full(shape=N, fill_value=1.0, dtype=np.float32)
 runner.memcpy_h2d(x_symbol, x, 0, 0, 1, 1, N, streaming=False,
@@ -36,7 +42,7 @@ runner.memcpy_h2d(y_symbol, y, 0, 0, 1, 1, N, streaming=False,
   order=MemcpyOrder.ROW_MAJOR, data_type=MemcpyDataType.MEMCPY_32BIT, nonblock=False)
 
 
-# Launch the init_and_compute function on device
+# Launch the compute function on device
 runner.launch('compute', nonblock=False)
 
 # Copy y back from device
@@ -53,7 +59,8 @@ runner.memcpy_d2h(y_result, y_symbol, 0, 0, 1, 1, N, streaming=False,
 # Stop the program
 runner.stop()
 
-expected_y = y + 2*x
+# Calculate expected result
+expected_y = y + 2.0*x
 
 # Ensure that the result matches our expectation
 np.testing.assert_allclose(y_result, expected_y, atol=0.01, rtol=0)

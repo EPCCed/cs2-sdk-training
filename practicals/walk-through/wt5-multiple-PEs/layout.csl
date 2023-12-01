@@ -1,10 +1,13 @@
+// Parameters can be passed from command line
+// N: array size
+// width: Number of PE columns
 param N: i16;
 param width: i16;
 
 // Color used by memcpy for RPC mechanism
 const LAUNCH: color = @get_color(8);
 
-// Import memcpy layout module for 1 x 1 grid of PEs
+// Import memcpy layout module for (width=2) x 1 grid of PEs
 // This module defines parameters passed to program on the single PE
 const memcpy = @import_module("<memcpy/get_params>", .{
   .width = width,
@@ -13,15 +16,18 @@ const memcpy = @import_module("<memcpy/get_params>", .{
 });
 
 layout {
+  // set rectangle for 2x1 PEs
   @set_rectangle(width, 1);
+
+  // Use a for loop to assign tile code to each PE
   for (@range(i16, width)) |x| {
     @set_tile_code(x, 0, "pe_program.csl", .{
       .memcpy_params = memcpy.get_params(x),
       .N = N
     });
+    }
 
-  // Export device symbol for array "y"
-  // Last argument is mutability: host can read y, but not write to it
+  // Export device symbol for array "x", "y"
   @export_name("x", [*]f32, true);
   @export_name("y", [*]f32, true);
 

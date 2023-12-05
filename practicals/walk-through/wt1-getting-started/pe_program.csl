@@ -1,0 +1,49 @@
+// Struct containing parameters for memcpy layout
+param memcpy_params: comptime_struct;
+
+// memcpy module provides infrastructure for copying data
+// and launching functions from the host
+const sys_mod = @import_module("<memcpy/memcpy>", memcpy_params);
+
+// Constants definining dimensions of our matrix
+const N: i16 = 3;
+
+// 48 kB of global memory contain x, y
+var x: [N] f32;
+var y: [N]f32;
+
+// Function for summing two array from pointers
+fn sum(x_ptr : *[N] f32, y_ptr : *[N] f32, value : f32) void
+{
+    // For-loop syntax:
+    for (@range(i16, N)) |idx| {
+      // De-referencing pointers syntax
+      // TO DO: EDIT following line to multiply value to Right Hand Side
+      y_ptr.*[idx] += x_ptr.*[idx];
+  }
+}
+
+// Function for initializing x and y arrays
+fn initialize() void {
+    for (@range(i16, N)) |idx| {
+      x[idx] = 1.0;
+      y[idx] = @as(f32, idx);
+  }
+}
+
+
+// Call initialize and sum functions
+fn init_and_compute() void {
+  initialize();
+  sum(&x, &y, 2.0);
+}
+
+
+comptime {
+  // Export function so it is host-callable by RPC mechanism
+  @export_symbol(init_and_compute);
+
+  // Create RPC server using color LAUNCH
+  @rpc(@get_data_task_id(sys_mod.LAUNCH));
+}
+

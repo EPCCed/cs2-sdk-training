@@ -1,0 +1,48 @@
+// matrix dimensions on each PE
+param M: i16;
+param N: i16;
+param width: u16;
+// Colors
+const LAUNCH:     color = @get_color(8); // Color used by memcpy for kernel launch
+
+// Task IDs
+const exit_task_id: local_task_id = @get_local_task_id(9); // Task ID used by local task
+
+// This example only uses 2 PEs
+const memcpy = @import_module("<memcpy/get_params>", .{
+  .width = width,
+  .height = 1,
+  .LAUNCH = LAUNCH
+});
+
+// collectives_2d module
+const c2d = @import_module("<collectives_2d/params>");
+
+layout {
+  // PE coordinates are (column, row)
+  @set_rectangle(width, 1);
+
+  var Px: u16 = 0;
+  while (Px < width) : (Px += 1) {
+    const c2d_params = c2d.get_params(Px, 0, .{
+        .x_colors      = .{ @get_color(0),         @get_color(1) },
+        .x_entrypoints = .{ @get_local_task_id(10), @get_local_task_id(11) }
+      });
+    @set_tile_code(Px, 0, "pe_program.csl", .{
+      .c2d_params = c2d_params,
+      .memcpy_params = memcpy.get_params(Px),
+      .M = M,
+      .N_per_PE = N / 2,
+      .pe_id = Px,
+      .exit_task_id = exit_task_id
+    });
+  }
+
+
+  // export symbol names
+  @export_name("A", [*]f32, true);
+  @export_name("x", [*]f32, true);
+  @export_name("y", [*]f32, true);
+  @export_name("y_out", [*]f32, true);
+  @export_name("compute", fn()void);
+}

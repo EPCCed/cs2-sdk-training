@@ -4,7 +4,7 @@ The aim of this hands-on is to perform GEMV over 2 PEs.
 
 On each PE, a local GEMV will be performed, then the result from the left will be transfered to the right, then summed.
 
-This will use the techniques introduced in wt4/5, including
+This will use the techniques introduced in wt5/6, including
 
 * fabric DSDs
 * setting tile code for multiple PEs

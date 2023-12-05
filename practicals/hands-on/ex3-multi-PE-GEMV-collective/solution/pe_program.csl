@@ -1,0 +1,83 @@
+param c2d_params: comptime_struct;
+param memcpy_params: comptime_struct;
+
+// Matrix dimensions
+param M: i16;
+param N_per_PE: i16;
+
+// ID of PE (0 is left, 1 is right)
+param pe_id: i16;
+
+
+// Task IDs
+param exit_task_id: local_task_id; // Task ID used by a local task to unblock cmd stream
+
+
+// memcpy module provides infrastructure for copying data
+// and launching functions from the host
+const sys_mod = @import_module("<memcpy/memcpy>", memcpy_params);
+
+const mpi_x = @import_module("<collectives_2d/pe>", .{
+    .dim_params = c2d_params.x,
+    .queues = [2]u16{2,4},
+    .dest_dsr_ids = [1]u16{1},
+    .src0_dsr_ids = [1]u16{1},
+    .src1_dsr_ids = [1]u16{1}
+    });
+
+
+// 48 kB of global memory contain A, x, b, y
+var A: [M*N_per_PE]f32; // A is stored column major
+var x: [N_per_PE]f32;
+var y: [M]f32;
+var y_out= @zeros([M]f32);
+
+// DSDs for accessing A, b, y
+// A_dsd accesses column of A
+var A_dsd = @get_dsd(mem1d_dsd, .{ .tensor_access = |i|{M} -> A[i] });
+var y_dsd = @get_dsd(mem1d_dsd, .{ .tensor_access = |i|{M} -> y[i] });
+
+// ptrs to A, x, b, y will be advertised as symbols to host
+var A_ptr: [*]f32 = &A;
+var x_ptr: [*]f32 = &x;
+var y_ptr: [*]f32 = &y;
+var y_out_ptr: [*]f32 = &y_out;
+
+// Compute gemv
+fn gemv() void {
+  // Loop over all columns of A
+  for (@range(i16, N_per_PE)) |i| {
+    // Calculate contribution to A*x from ith column of A, ith elem of x
+    @fmacs(y_dsd, y_dsd, A_dsd, x[i]);
+    // Move A_dsd to next column of A
+    A_dsd = @increment_dsd_offset(A_dsd, M, f32);
+  }
+
+}
+
+fn mpi_task() void {
+  mpi_x.init();
+  mpi_x.reduce_fadds(1, y_ptr, y_out_ptr, M, exit_task_id);
+}
+
+
+// Call gemv function and send/ receive partial result y
+fn compute() void {
+  gemv();
+  mpi_task();
+}
+
+task exit_task() void {
+  sys_mod.unblock_cmd_stream();
+}
+
+comptime {
+  // When exit_task_id is activated, exit_task will execute
+  @bind_local_task(exit_task, exit_task_id);
+  @export_symbol(A_ptr, "A");
+  @export_symbol(x_ptr, "x");
+  @export_symbol(y_ptr, "y");
+  @export_symbol(y_out_ptr, "y_out");
+  @export_symbol(compute);
+  @rpc(@get_data_task_id(sys_mod.LAUNCH));
+}

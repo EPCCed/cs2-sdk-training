@@ -80,7 +80,6 @@ task exit_task() void {
 comptime {
   // When exit_task_id is activated, exit_task will execute
   @bind_local_task(exit_task, exit_task_id);
-  @block(send_color);
   @export_symbol(A_ptr, "A");
   @export_symbol(x_ptr, "x");
   @export_symbol(y_ptr, "y");

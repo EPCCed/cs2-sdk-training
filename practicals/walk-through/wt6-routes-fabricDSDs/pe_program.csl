@@ -76,10 +76,6 @@ comptime {
   // When exit_task_id is activated, exit_task will execute
   @bind_local_task(exit_task, exit_task_id);
 
-  // send_color needs to be blocked initially
-  // Otherwise the packet will be consumed 
-  @block(send_color);
-
   // Export function so it is host-callable by RPC mechanism
   @export_symbol(compute);
 

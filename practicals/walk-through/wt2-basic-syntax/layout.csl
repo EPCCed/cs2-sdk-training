@@ -1,3 +1,7 @@
+// Parameters can be passed from compilation command line
+// N: array size
+param N: i16;
+
 // Color used by memcpy for RPC mechanism
 const LAUNCH: color = @get_color(8);
 
@@ -17,7 +21,7 @@ layout {
   // The lone PE in this program should execute the code in "pe_program.csl"
   // We pass memcpy parameters as a parameter to the program. Note that
   // memcpy parameters are parameterized by the PE's column number.
-  @set_tile_code(0, 0, "pe_program.csl", .{ .memcpy_params = memcpy.get_params(0) });
+  @set_tile_code(0, 0, "pe_program.csl", .{ .memcpy_params = memcpy.get_params(0), .N = N});
 
   // Export host-callable device function
   @export_name("init_and_compute", fn()void);

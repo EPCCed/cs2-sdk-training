@@ -5,8 +5,8 @@ param memcpy_params: comptime_struct;
 // and launching functions from the host
 const sys_mod = @import_module("<memcpy/memcpy>", memcpy_params);
 
-// Constants definining dimensions of our matrix
-const N: i16 = 3;
+// Parameter definining dimensions of our matrix
+param N: i16 = 3;
 
 // 48 kB of global memory contain x, y
 var x: [N] f32;

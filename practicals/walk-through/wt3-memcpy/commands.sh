@@ -2,7 +2,7 @@
 
 set -e
 
-rm -r out
+rm -rf out
 
 cslc ./layout.csl --fabric-dims=8,3 \
 --fabric-offsets=4,1 -o out --memcpy --channels 1

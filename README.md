@@ -4,7 +4,7 @@ This repository contains the materials for a practical introduction to using the
 
 This top level directory contains:
 * [lectures](lectures) which holds the PDF lecture material for the course, providing an overview to the system architecture and practical walkthroughs
-* [practical](practical) contains the practical walkthrough material (that we will do together) and the handson activities that are more independent
+* [practicals](practicals) contains the practical walkthrough material (that we will do together) and the handson activities that are more independent
 
 ## Tutorial timetable
 

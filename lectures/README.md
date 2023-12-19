@@ -14,7 +14,7 @@ This directory contains the lecture materials in PDF format, with the [powerpoin
 ## Auxiliary slides
 
 >**Note**
-> These auxiliary slides are provided with a tutorial at SC in mind although do apply more general to people following the tutorial external to that session
+> These auxiliary slides are provided with a tutorial at ISC in mind although do apply more general to people following the tutorial external to that session
 
 * [Introduction, welcome and objectives](https://github.com/EPCCed/cs2-sdk-training/blob/main/lectures/Welcome%20and%20overview.pdf): Which provides an introduction to the session and tutorial objectives
 * [Logging onto the CS-2 machine](https://github.com/EPCCed/cs2-sdk-training/blob/main/lectures/Accessing%20CS-2.pdf): Accessing the CS-2 host machine via the visitor credentials provided to attendees

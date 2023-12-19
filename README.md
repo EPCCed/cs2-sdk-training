@@ -14,7 +14,7 @@ Based upon a morning session at ISC
 | ------------- |:-------------:|
 | 9:00 - 9:05      | [Introduction, welcome and objectives](https://github.com/EPCCed/cs2-sdk-training/blob/main/lectures/Welcome%20and%20overview.pdf) |
 | 9:05 - 9:25      | [An Overview of the CS-2 architecture](https://github.com/EPCCed/cs2-sdk-training/blob/main/lectures/Architecture%20overview.pdf) |
-| 9:25 - 9:35 | Logging onto the CS-2 machine |
+| 9:25 - 9:35 | [Logging onto the CS-2 machine](https://github.com/EPCCed/cs2-sdk-training/blob/main/lectures/Accessing%20CS-2.pdf) |
 | 9:35 - 10:35 | [Practical walkthrough: Intro to SDK (CSL + Host Runtime)](https://github.com/EPCCed/cs2-sdk-training/blob/main/lectures/SDK-walkthrough-part-one.pdf) |
 | 10:35 - 11:00 | Hands-on practical activity [one](https://github.com/EPCCed/cs2-sdk-training/tree/main/practicals/hands-on/ex1-single-PE-GEMV) ([slides](https://github.com/EPCCed/cs2-sdk-training/blob/main/lectures/hands-on-1%2Bwashup.pdf))|
 | 11:00 - 11:30 | ISC morning break |

@@ -20,6 +20,6 @@ Based upon a morning session at ISC
 | 11:00 - 11:30 | ISC morning break |
 | 11:30 - 11:35 | Welcome back and overview of the second part |
 | 11:35 - 11:55 | [Practical walkthrough: Using multiple PEs and communication](https://github.com/EPCCed/cs2-sdk-training/blob/main/lectures/SDK-walkthrough-part-two.pdf)|
-| 11:55 - 12:45 | Hands-on practical activities two and three |
-| 12:45 - 12:52 | Wash up from practical activities |
+| 11:55 - 12:45 | Hands-on practical activities two and three ([slides for two](https://github.com/EPCCed/cs2-sdk-training/blob/main/lectures/hands-on-2%2Bwashup.pdf) [slides for three](https://github.com/EPCCed/cs2-sdk-training/blob/main/lectures/hands-on-3%2Bwashup.pdf)) |
+| 12:45 - 12:52 | Wash up from practical activities ([one](https://github.com/EPCCed/cs2-sdk-training/blob/main/lectures/hands-on-1%2Bwashup.pdf) [two](https://github.com/EPCCed/cs2-sdk-training/blob/main/lectures/hands-on-2%2Bwashup.pdf) [three](https://github.com/EPCCed/cs2-sdk-training/blob/main/lectures/hands-on-3%2Bwashup.pdf))|
 | 12:52 - 13:00 | Conclusions and next steps |

@@ -12,7 +12,7 @@ Based upon a morning session at ISC
 
 | Time        | Details           |
 | ------------- |:-------------:|
-| 9:00 - 9:05      | Introduction, welcome and objectives |
+| 9:00 - 9:05      | [Introduction, welcome and objectives](https://github.com/EPCCed/cs2-sdk-training/blob/main/lectures/Welcome%20and%20overview.pdf) |
 | 9:05 - 9:25      | [An Overview of the CS-2 architecture](https://github.com/EPCCed/cs2-sdk-training/blob/main/lectures/Architecture%20overview.pdf) |
 | 9:25 - 9:35 | Logging onto the CS-2 machine |
 | 9:35 - 10:35 | [Practical walkthrough: Intro to SDK (CSL + Host Runtime)](https://github.com/EPCCed/cs2-sdk-training/blob/main/lectures/SDK-walkthrough-part-one.pdf) |

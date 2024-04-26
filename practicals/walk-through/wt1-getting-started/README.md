@@ -51,3 +51,5 @@ The previous commands allow us to compile and run the program using the fabric s
     ``` bash
     cs_python run.py --name out --cmaddr $CS_IP_ADDR:9000
     ```
+
+For running the SDK on a Wafer-Scale Clusters in appliance mode (e.g. at EPCC), some additional changes is required. For details on the required changes, see https://sdk.cerebras.net/appliance-mode. For information about setting up the virtual environment, see https://docs.cerebras.net/en/latest/wsc/getting-started/setup-environment.html and https://epcced.github.io/eidf-docs/services/cs2/run/ . 

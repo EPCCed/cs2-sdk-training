@@ -2,9 +2,7 @@
 
 set -e
 
-#!/usr/bin/env bash
-
-set -e
+rm -rf out
 
 cslc ./layout.csl --fabric-dims=22,17 --fabric-offsets=4,1 \
 --params=Pw:15,Ph:15,chunk_size:3 -o out \

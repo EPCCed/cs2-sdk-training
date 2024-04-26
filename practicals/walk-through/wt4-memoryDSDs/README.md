@@ -4,7 +4,7 @@ A central concept in CSL is memory Data Structure Descriptors (DSDs). Memory DSD
 
 ## Defining memory DSDs
 
-First, let’s take a look at the DSDs we define for accessing b and y:
+First, let’s take a look at the DSDs we define for accessing x and y:
 
 ```
 var x_dsd = @get_dsd(mem1d_dsd, .{ .tensor_access = |i|{N} -> x[i] });

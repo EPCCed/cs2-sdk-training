@@ -2,9 +2,10 @@
 
 How do we copy data in and out of the WSE from our host?
 
-We need our layout file to export the symbol names for A, x, and b.
+* We need our layout file (`layout.csl`)to export the symbol names for x and y.
+* We need our PE program (`pe_program.csl`)to export pointers to x and y. 
 
-We need our PE program to export pointers to A, x, and b. The PE program no longer needs to initialize these tensors.
+The PE program no longer needs to initialize these tensors.
 
 In `layout.csl`:
 ```
@@ -17,7 +18,7 @@ const memcpy = @import_module("<memcpy/get_params>", .{
 });
 
 // Export device symbol for array "x", "y"
-// Last argument is mutability: host can read and write x, y=
+// Last argument is mutability: host can read and write x, y
 @export_name("x", [*]f32, true);
 @export_name("y", [*]f32, true);
 ```

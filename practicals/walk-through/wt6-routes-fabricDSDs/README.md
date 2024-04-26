@@ -1,6 +1,6 @@
 # Walk through 6: Routes & Fabric DSDs
 
-In this walk-through we will modify split our AXPY operation into two parts:
+In this walk-through we will split our AXPY operation into two parts:
 
 * `v = a*x` will be performed on the left PE, and this result `v` will be transfered to the right PE, then
 * `y = y + v` will be summed on the right PE
@@ -44,7 +44,7 @@ These are passed to `pe_program.csl` tile code in
 
 In the two `@set_tile_code` calls, one for the left PE (0, 0), and one for the right PE (1, 0), they now receive as a parameter a pe_id: the left PE has pe_id 0, and the right PE has pe_id 1. We’ll see in pe_program.csl how we use pe_id to parameterize the behavior of the program.
 
-The router of each PE has five directions: RAMP, NORTH, SOUTH, EAST, WEST. The cardinal directions refer to the routers of neighboring PEs: NORTH is the PE directly above our PE, and so on. RAMP refers to the connection between our PE’s router and its compute element (CE). When setting a route for a color on a given PE, the receive rx and transmit tx fields are from the perspective of the router. Thus, receiving form the RAMP means that our compute element is sending data up to the fabric, where it can then be transmitted across the fabric.
+The router of each PE has five directions: `RAMP`, `NORTH`, `SOUTH`, `EAST`, `WEST`. (For a good conceptual view, see https://sdk.cerebras.net/computing-with-cerebras) The cardinal directions refer to the routers of neighboring PEs: `NORTH` is the PE directly above our PE, and so on. `RAMP` refers to the connection between our PE’s router and its compute element (CE). When setting a route for a color on a given PE, the receive `rx` and transmit `tx` fields are from the perspective of the router. Thus, receiving form the RAMP means that our compute element is sending data up to the fabric, where it can then be transmitted across the fabric.
 
 For the left PE (0, 0), send_color will send up the PE’s RAMP to the fabric, and then transmit data to the EAST. For the right PE (1, 0), send_color will receive data from the WEST on the fabric (i.e., from the left PE), and then transmit it down the RAMP to its compute element.
 
@@ -101,4 +101,4 @@ comptime {
 
 ```
 
-In the comptime block, the` @bind_local_task` builtin binds `exit_task_id` to the task `exit_task`. When `exit_task_id` is activated, `exit_task`, which unblocks the memcpy command stream, executes. This task must execute on both PEs before control is returned to the host.
+In the comptime block, the `@bind_local_task` builtin binds `exit_task_id` to the task `exit_task`. When `exit_task_id` is activated, `exit_task`, which unblocks the memcpy command stream. This task must execute on both PEs before control is returned to the host.

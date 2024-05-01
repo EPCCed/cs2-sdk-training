@@ -10,7 +10,7 @@ param N: i16 = 3;
 
 // 48 kB of global memory contain x, y
 var x: [N] f32;
-var y: [N]f32;
+var y: [N] f32;
 
 // Function for summing two array from pointers
 fn sum(x_ptr : *[N] f32, y_ptr : *[N] f32, value : f32) void
@@ -36,6 +36,11 @@ fn initialize() void {
 fn init_and_compute() void {
   initialize();
   sum(&x, &y, 2.0);
+
+  // After this function finishes, memcpy's cmd_stream must
+  // be unblocked on all PEs for further memcpy commands
+  // to execute
+  sys_mod.unblock_cmd_stream();
 }
 
 

@@ -12,14 +12,12 @@ Based upon a morning session at ISC
 
 | Time        | Details           |
 | ------------- |:-------------:|
-| 9:00 - 9:05      | [Introduction, welcome and objectives](https://github.com/EPCCed/cs2-sdk-training/blob/main/lectures/Welcome%20and%20overview.pdf) |
-| 9:05 - 9:25      | [An Overview of the CS-2 architecture](https://github.com/EPCCed/cs2-sdk-training/blob/main/lectures/Architecture%20overview.pdf) |
-| 9:25 - 9:35 | [Logging onto the CS-2 machine](https://github.com/EPCCed/cs2-sdk-training/blob/main/lectures/Accessing%20CS-2.pdf) |
-| 9:35 - 10:35 | [Practical walkthrough: Intro to SDK (CSL + Host Runtime)](https://github.com/EPCCed/cs2-sdk-training/blob/main/lectures/SDK-walkthrough-part-one.pdf) |
-| 10:35 - 11:00 | Hands-on practical activity [one](https://github.com/EPCCed/cs2-sdk-training/tree/main/practicals/hands-on/ex1-single-PE-GEMV) ([slides](https://github.com/EPCCed/cs2-sdk-training/blob/main/lectures/hands-on-1%2Bwashup.pdf))|
-| 11:00 - 11:30 | ISC morning break |
-| 11:30 - 11:35 | [Welcome back and overview of the second part](https://github.com/EPCCed/cs2-sdk-training/blob/main/lectures/Second%20Part.pdf) |
-| 11:35 - 11:55 | [Practical walkthrough: Using multiple PEs and communication](https://github.com/EPCCed/cs2-sdk-training/blob/main/lectures/SDK-walkthrough-part-two.pdf)|
-| 11:55 - 12:45 | Hands-on practical activities [two](https://github.com/EPCCed/cs2-sdk-training/tree/main/practicals/hands-on/ex2-multi-PE-GEMV) and [three](https://github.com/EPCCed/cs2-sdk-training/tree/main/practicals/hands-on/ex3-multi-PE-GEMV-collective) ([slides for two](https://github.com/EPCCed/cs2-sdk-training/blob/main/lectures/hands-on-2%2Bwashup.pdf), [slides for three](https://github.com/EPCCed/cs2-sdk-training/blob/main/lectures/hands-on-3%2Bwashup.pdf)) |
-| 12:45 - 12:52 | Wash up from practical activities ([one](https://github.com/EPCCed/cs2-sdk-training/blob/main/lectures/hands-on-1%2Bwashup.pdf), [two](https://github.com/EPCCed/cs2-sdk-training/blob/main/lectures/hands-on-2%2Bwashup.pdf), [three](https://github.com/EPCCed/cs2-sdk-training/blob/main/lectures/hands-on-3%2Bwashup.pdf))|
-| 12:52 - 13:00 | [Conclusions and next steps](https://github.com/EPCCed/cs2-sdk-training/blob/main/lectures/Conclusions.pdf) |
+| 9:30 - 9:35      | [Introduction, welcome and objectives](https://github.com/EPCCed/cs2-sdk-training/blob/main/lectures/Welcome%20and%20overview.pdf) |
+| 9:35 - 9:55      | [An Overview of the CS-2 architecture](https://github.com/EPCCed/cs2-sdk-training/blob/main/lectures/Architecture%20overview.pdf) |
+| 9:55 - 10:00 | [Logging onto the CS-2 machine](https://github.com/EPCCed/cs2-sdk-training/blob/main/lectures/Accessing%20CS-2.pdf) |
+| 10:00 - 11:00 | [Practical walkthrough: Intro to SDK (CSL + Host Runtime)](https://github.com/EPCCed/cs2-sdk-training/blob/main/lectures/SDK-walkthrough-part-one.pdf) |
+| 11:00 - 11:25 | Hands-on practical activity & coffee [one](https://github.com/EPCCed/cs2-sdk-training/tree/main/practicals/hands-on/ex1-single-PE-GEMV) ([slides](https://github.com/EPCCed/cs2-sdk-training/blob/main/lectures/hands-on-1%2Bwashup.pdf))|
+| 11:25 - 11:45 | [Practical walkthrough: Using multiple PEs and communication](https://github.com/EPCCed/cs2-sdk-training/blob/main/lectures/SDK-walkthrough-part-two.pdf)|
+| 11:45 - 12:15 | Hands-on practical activities [two](https://github.com/EPCCed/cs2-sdk-training/tree/main/practicals/hands-on/ex2-multi-PE-GEMV) and [three](https://github.com/EPCCed/cs2-sdk-training/tree/main/practicals/hands-on/ex3-multi-PE-GEMV-collective) ([slides for two](https://github.com/EPCCed/cs2-sdk-training/blob/main/lectures/hands-on-2%2Bwashup.pdf), [slides for three](https://github.com/EPCCed/cs2-sdk-training/blob/main/lectures/hands-on-3%2Bwashup.pdf)) |
+| 12:15 - 12:25 | Wash up from practical activities ([one](https://github.com/EPCCed/cs2-sdk-training/blob/main/lectures/hands-on-1%2Bwashup.pdf), [two](https://github.com/EPCCed/cs2-sdk-training/blob/main/lectures/hands-on-2%2Bwashup.pdf), [three](https://github.com/EPCCed/cs2-sdk-training/blob/main/lectures/hands-on-3%2Bwashup.pdf))|
+| 12:25 - 12:30 | [Conclusions and next steps](https://github.com/EPCCed/cs2-sdk-training/blob/main/lectures/Conclusions.pdf) |

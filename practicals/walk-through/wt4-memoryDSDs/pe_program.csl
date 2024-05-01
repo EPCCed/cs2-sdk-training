@@ -24,14 +24,19 @@ var x_dsd = @get_dsd(mem1d_dsd, .{ .tensor_access = |i|{N} -> x[i] });
 var y_dsd = @get_dsd(mem1d_dsd, .{ .tensor_access = |i|{N} -> y[i] });
 
 
+fn sum(x_ptr : *[N] f32, y_ptr : *[N] f32, value : f32) void
+{
+    for (@range(i16, N)) |idx| {
+      y_ptr.*[idx] += value * x_ptr.*[idx];
+  }
+}
 
 
 // Call initialize and new sum functions
 fn compute() void {
   const a: f32 = 2.0;
+  sum(&x, &y, a);
 
-  // @fmacs is a builtin for multiply-add that operates on DSDs
-  @fmacs(y_dsd, y_dsd, x_dsd, a);
 
   // After this function finishes, memcpy's cmd_stream must
   // be unblocked on all PEs for further memcpy commands

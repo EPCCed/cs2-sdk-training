@@ -31,7 +31,7 @@ fn sum(x_ptr : *[N] f32, y_ptr : *[N] f32, value : f32) void
 
 // Call initialize and sum functions
 fn compute() void {
-  const a: f32 = 2.0;
+  const a: f32 = 1.0;
   sum(&x, &y, a);
 
   // After this function finishes, memcpy's cmd_stream must

@@ -34,13 +34,13 @@ param exit_task_id: local_task_id; // Task ID used by a local task to unblock cm
 
 
 fn send_right() void {
-  const out_dsd = @get_dsd(fabout_dsd, .{ .fabric_color = send_color, .extent = N, .output_queue = @get_output_queue(1)});
+  const out_dsd = @get_dsd(fabout_dsd, .{ .fabric_color = TODO, .extent = TODO, .output_queue = @get_output_queue(1)});
   // After fmovs is done, activate exit_task to unblock cmd_stream
   @fmovs(out_dsd, x_dsd, .{ .async = true, .activate = exit_task_id });
 }
 
 fn recv_left() void{
-  const in_dsd = @get_dsd(fabin_dsd, .{ .fabric_color = send_color, .extent = N, .input_queue = @get_input_queue(1)});
+  const in_dsd = @get_dsd(fabin_dsd, .{ .fabric_color = TODO, .extent = TODO, .input_queue = @get_input_queue(1)});
   // After fadds is done, activate exit_task to unblock cmd stream
   @fadds(y_dsd, y_dsd, in_dsd, .{ .async = true, .activate = exit_task_id});
 }

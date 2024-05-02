@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 
 set -e
+source ../../general/setup_env_epcc.sh
 
 rm -rf out
 

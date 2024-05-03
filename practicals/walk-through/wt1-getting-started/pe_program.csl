@@ -12,8 +12,8 @@ const N: i16 = 3;
 var x: [N] f32;
 var y: [N]f32;
 
-// Function for summing two array from pointers
-fn sum(x_ptr : *[N] f32, y_ptr : *[N] f32, value : f32) void
+// Function for performing a scaled sum on two arrays from pointers
+fn scaled_sum(x_ptr : *[N] f32, y_ptr : *[N] f32, value : f32) void
 {
     // For-loop syntax:
     for (@range(i16, N)) |idx| {
@@ -32,10 +32,10 @@ fn initialize() void {
 }
 
 
-// Call initialize and sum functions
+// Call initialize and scaled_sum functions
 fn init_and_compute() void {
   initialize();
-  sum(&x, &y, 2.0);
+  scaled_sum(&x, &y, 2.0);
 }
 
 

@@ -20,8 +20,8 @@ var y_ptr: [*]f32 = &y;
 
 
 
-// Same function for summing arrays
-fn sum(x_ptr : *[N] f32, y_ptr : *[N] f32, value : f32) void
+// Function for performing a scaled sum on two arrays from pointers
+fn scaled_sum(x_ptr : *[N] f32, y_ptr : *[N] f32, value : f32) void
 {
     for (@range(i16, N)) |idx| {
       y_ptr.*[idx] += value * x_ptr.*[idx];
@@ -29,10 +29,10 @@ fn sum(x_ptr : *[N] f32, y_ptr : *[N] f32, value : f32) void
 }
 
 
-// Call initialize and sum functions
+// Call initialize and scaled_sum functions
 fn compute() void {
   const a: f32 = 1.0;
-  sum(&x, &y, a);
+  scaled_sum(&x, &y, a);
 
   // After this function finishes, memcpy's cmd_stream must
   // be unblocked on all PEs for further memcpy commands

@@ -1,6 +1,8 @@
 // ====== TO DO 1: ======
-// Define parameters for matrix dimensions
-// M and N (type i16:)
+// Define parameters for matrix dimensions, the syntax is
+// param VARIABLE: type;
+// where VARIABLE is the value, and type is its type
+// We need parameters for M and N (type i16:)
 
 // Color used by memcpy for RPC mechanism
 const LAUNCH: color = @get_color(8);

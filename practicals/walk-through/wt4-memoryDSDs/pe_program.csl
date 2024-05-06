@@ -26,7 +26,7 @@ var y_dsd = @get_dsd(mem1d_dsd, .{ .tensor_access = |i|{N} -> y[i] });
 
 fn scaled_sum(x_ptr : *[N] f32, y_ptr : *[N] f32, value : f32) void
 {
-    for (@range(i16, N)) |idx| {
+  for (@range(i16, N)) |idx| {
       y_ptr.*[idx] += value * x_ptr.*[idx];
   }
 }
@@ -35,8 +35,7 @@ fn scaled_sum(x_ptr : *[N] f32, y_ptr : *[N] f32, value : f32) void
 // Call initialize and new scaled_sum functions
 fn compute() void {
   const a: f32 = 2.0;
-  sum(&x, &y, a);
-  scaled_sum(&x, &y, 2.0);
+  scaled_sum(&x, &y, a);
 
 
   // After this function finishes, memcpy's cmd_stream must

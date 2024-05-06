@@ -1,8 +1,11 @@
 param memcpy_params: comptime_struct;
 
 // ====== TO DO 1: ======
-// Define parameters for matrix dimensions
-// M and N (type i16:)
+// Define parameters for matrix dimensions, the syntax is
+// param VARIABLE: type;
+// where VARIABLE is the value, and type is its type
+// We need parameters for M and N (type i16:)
+
 
 // memcpy module provides infrastructure for copying data
 // and launching functions from the host

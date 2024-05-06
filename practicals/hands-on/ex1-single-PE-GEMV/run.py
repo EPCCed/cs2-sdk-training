@@ -36,8 +36,11 @@ y_symbol = runner.get_id('y')
 runner.load()
 runner.run()
 
+runner.memcpy_h2d(A_symbol, A, 0, 0, 1, 1, M*N, streaming=False,
+  order=MemcpyOrder.ROW_MAJOR, data_type=MemcpyDataType.MEMCPY_32BIT, nonblock=False)
 ###### TO DO 1: ######
-# Copy A, x, b to device
+# Copy x and b symbols to the device
+# x is of size N and b is of size M
 # Hint: Use runner.memcpy_h2d(...)
 
 # Launch the init_and_compute function on device
@@ -47,7 +50,11 @@ y_result = np.zeros([M], dtype=np.float32)
 
 ###### TO DO 2: ######
 # Copy y back from device to y_result
-# Hint: Use runner.memcpy_d2h(...)
+# Hint: Use runner.memcpy_d2h(...) such as
+# runner.memcpy_d2h(VARIABLE, SYMBOL, 0, 0, 1, 1, SIZE, streaming=False,
+#   order=MemcpyOrder.ROW_MAJOR, data_type=MemcpyDataType.MEMCPY_32BIT, nonblock=False)
+# Where VARIABLE is the python variable, SYMBOL is the symbol on the CS-2 and 
+# SIZE is the size of the data (number of elements)
 
 # Stop the program
 runner.stop()

@@ -1,8 +1,11 @@
 param memcpy_params: comptime_struct;
 
 // ====== TO DO 1: ======
-// Define parameters for matrix dimensions
-// M and N (type i16:)
+// Define parameters for matrix dimensions, the syntax is
+// param VARIABLE: type;
+// where VARIABLE is the value, and type is its type
+// We need parameters for M and N (type i16:)
+
 
 // memcpy module provides infrastructure for copying data
 // and launching functions from the host
@@ -25,10 +28,11 @@ const y_ptr: [*]f32 = &y;
 // ====== TO DO 2: ======
 // Construct gemv() function
 //
-// Option 1 (simpler): use nested for-loops to sum over each row
-//               Hint: i in M, j in N, inner loop with tmp += A[i*N + j] * x[j]
+// Option 1 (simpler): Complete nested for-loops to sum over each row
+//               Hint: 1. i in M, j in N, inner loop with tmp += A[i*N + j] multipled by the jth value of x
+//                   : 2. Then need to assign to y[i] with the value in tmp and the ith's value of b array
 //
-// Option 2  (harder): use memory DSDs to perform the matrix operation
+// Option 2  (harder): Replace loops in gemv to use memory DSDs to perform the matrix operation
 //               Hint: 1. define the memory DSDs for A, b, y.
 //                   :    Tensor access for b and y should sequential `|i|{M} -> b[i]`
 //                   :    Tensor access for A should access columns `|i|{M} -> A[i*N]`
@@ -46,7 +50,13 @@ const y_ptr: [*]f32 = &y;
 
 // Compute gemv
 fn gemv() void {
-
+  for (@range(i16, M)) |i| {
+    var tmp: f32 = 0.0;
+    for (@range(i16, N)) |j| {
+      tmp += // TODO
+    }
+    y[i] = // TODO
+  }
 }
 
 // Call initialize and gemv functions

@@ -16,7 +16,7 @@ The parameters `M` and `N` should be set during compile time.
 ## To do's:
 To complete this hands-on, the following sections need to be filled in:
 * 2 sections in [run.py](run.py)
-* 2 sections in [pe_program.csl](layout.csl) 
+* 2 sections in [pe_program.csl](pe_program.csl) 
 * 1 section in [layout.csl](layout.csl)
 
 ## Solutions

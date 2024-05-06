@@ -45,43 +45,40 @@ fn gemv() void {
   }
 }
 
-// ====== TO DO 1: ======
-// Define send_right()
-// Hint: 1. Define out_dsd with @get_dsd with fabout_dsd
-//     :    with send_color as fabric_color
-//     :    with extent M
-//     :    use output_queue(1)
-//     : 2. use @fmovs to put y_dsd into out_dsd
-//            @fmovs(dest_dsd, src_dsd1, .{options});
-//     :    use async = true
-//     :    make sure exit_task_id is activated after fmovs
-//     :    use .activate to specify
 fn send_right() void {
-
+  const out_dsd = @get_dsd(fabout_dsd, .{
+                    .fabric_color = send_color, .extent = M,
+                    .output_queue = @get_output_queue(1)
+                  });
+  // After fmovs is done, activate exit_task to unblock cmd_stream
+  @fmovs(out_dsd, y_dsd, .{ .async = true, .activate = exit_task_id });
 }
 
-// ====== TO DO 2: ======
+// ====== TO DO 1: ======
 // Define recv_left()
-// Hint: 1. Define in_dsd with @get_dsd with fabin_dsd
+// Hint: 1. This is similar to the above send_right function
+//     : 2. Define in_dsd with @get_dsd with fabin_dsd
 //     :    with send_color as fabric_color
 //     :    with extent M
-//     :    use input_queue(1)
+//     :    but this time instead of .output_queue we use
+//     :    use .input_queue equal to @get_input_queue(1)
 //     : 2. use @fadds to add the received in_dsd to y_dsd
 //            @fadds(dest_dsd, src_dsd1, src_dsd2, .{options});
-//     :    use async = true
+//     :    where dest_dsd is y_dsd, src_dsd1 is y_dsd and src_dsd2 is in_dsd
+//     :    Use the same options as in send_right, where async = true
 //     :    make sure exit_task_id is activated after fmovs
 //     :    use .activate to specify
 fn recv_left() void {
 
 }
 
-// ====== TO DO 3: ======
-// Define compute function
-// Hint: both PEs first perform gemv function
-//     : then left PE (i.e. pe_id == 0) performs send_right()
-//     : and right PE (i.e. pe_id == 1) perform recv_left()
 fn compute() void {
-
+  gemv();
+  if (pe_id == 0) {
+    send_right();
+  } else {
+    // TO DO 2: Call the receive function
+  }
 }
 
 task exit_task() void {

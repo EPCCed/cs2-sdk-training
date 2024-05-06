@@ -12,7 +12,7 @@ This will use the techniques introduced in Walk-Throughs 5 and 6, including
 
 ## To do's:
 To complete this hands-on, the following sections need to be filled in:
-* 3 sections in [pe_program.csl](layout.csl) 
+* 2 sections in [pe_program.csl](pe_program.csl) 
 * 2 section in [layout.csl](layout.csl)
 
 ## Solution

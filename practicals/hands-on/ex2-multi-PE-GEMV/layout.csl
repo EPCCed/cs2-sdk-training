@@ -20,23 +20,33 @@ layout {
   // PE coordinates are (column, row)
   @set_rectangle(2, 1);
 
+  // Left PE (0, 0)
+  @set_tile_code(0, 0, "pe_program.csl", .{
+    .memcpy_params = memcpy.get_params(0),
+    .M = M,
+    .N_per_PE = N / 2,
+    .pe_id = 0,
+    .send_color = send_color,
+    .exit_task_id = exit_task_id
+  });
+
   // ====== TO DO 1: ======
-  // Set tile codes for Left PE (0, 0) and Right PE (1, 0)
-  // Hint: for left tile code, use .memcpy_params = memcpy.get_params(0),
+  // Modify line below to set tile codes for Right PE (1, 0) 
+  // Hint: this is similar to the above, but use 
   //     : and for right tile code, use memcpy.get_params(1)
   //     : the remaining parameters include (M, N_per_PE, pe_id, send_color, exit_task_id)
+  //     : where pe_id is the unique ID of this PE (1 here)
 
-  @set_tile_code(0, 0, ... );
   @set_tile_code(1, 0, ... );
 
+  // Left PE sends its result to the right
+  @set_color_config(0, 0, send_color, .{.routes = .{ .rx = .{RAMP}, .tx = .{EAST} }});
+
   // ====== TO DO 2: ======
-  // Set color config for Left PE (0, 0) and Right PE (1, 0)
-  // Hint: for left tile code, use the routes should have RAMP as rx, EAST for tx
-  //     : for rigiht tile code, use WEST as rx, RAMP as tx=
+  // Modify line below to set color config for Right PE (1, 0)
+  // Hint: use WEST as rx, and RAMP as tx 
 
-  @set_color_config(0, 0, ...);
   @set_color_config(1, 0, ...);
-
 
   // export symbol names
   @export_name("A", [*]f32, true);

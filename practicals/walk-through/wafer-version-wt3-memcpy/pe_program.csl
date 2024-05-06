@@ -31,7 +31,7 @@ fn scaled_sum(x_ptr : *[N] f32, y_ptr : *[N] f32, value : f32) void
 
 // Call initialize and scaled_sum functions
 fn compute() void {
-  const a: f32 = 1.0;
+  const a: f32 = 2.0;
   scaled_sum(&x, &y, a);
 
   // After this function finishes, memcpy's cmd_stream must

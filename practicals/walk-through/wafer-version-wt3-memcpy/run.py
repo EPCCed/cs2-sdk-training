@@ -1,16 +1,17 @@
 import numpy as np
+import json
 
-from cerebras.appliance.pb.sdk.sdk_common_pb2 import MemcpyDataType, MemcpyOrder
-from cerebras.sdk.client import SdkRuntime
+from cerebras_appliance.pb.sdk.sdk_common_pb2 import MemcpyDataType, MemcpyOrder
+from cerebras_appliance.sdk import SdkRuntime
 
 
 # Array size
 N = 3
 
 # Read the artifact_path from the JSON file
-with open("artifact_path.json", "r", encoding="utf8") as f:
+with open("artifact_id.json", "r", encoding="utf8") as f:
     data = json.load(f)
-    artifact_path = data["artifact_path"]
+    artifact_path = data["artifact_id"]
 
 
 # Instantiate a runner object using a context manager.

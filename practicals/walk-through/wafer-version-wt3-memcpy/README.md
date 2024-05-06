@@ -1,4 +1,9 @@
-# Walk through 3: Memcpy
+# RUNNING
+
+Launch by doing `sbatch submit.sh`. Do not run `./commands.sh` directly.
+
+# Walk through 3: Memcpy on Wafer
+
 
 How do we copy data in and out of the WSE from our host?
 

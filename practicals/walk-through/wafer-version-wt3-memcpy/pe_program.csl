@@ -1,0 +1,55 @@
+// Struct containing parameters for memcpy layout
+param memcpy_params: comptime_struct;
+
+// memcpy module provides infrastructure for copying data
+// and launching functions from the host
+const sys_mod = @import_module("<memcpy/memcpy>", memcpy_params);
+
+// Constants definining dimensions of our matrix
+const N: i16 = 3;
+
+// 48 kB of global memory contain x, y
+var x: [N] f32;
+var y: [N]f32;
+
+// Ptr to x, y will be exported as symbols to host
+// Ptr is var, so host can read and write to x and y
+// otherwise Ptr is const, so host can read but not write to y
+var x_ptr: [*]f32 = &x;
+var y_ptr: [*]f32 = &y;
+
+
+
+// Function for performing a scaled sum on two arrays from pointers
+fn scaled_sum(x_ptr : *[N] f32, y_ptr : *[N] f32, value : f32) void
+{
+    for (@range(i16, N)) |idx| {
+      y_ptr.*[idx] += value * x_ptr.*[idx];
+  }
+}
+
+
+// Call initialize and scaled_sum functions
+fn compute() void {
+  const a: f32 = 1.0;
+  scaled_sum(&x, &y, a);
+
+  // After this function finishes, memcpy's cmd_stream must
+  // be unblocked on all PEs for further memcpy commands
+  // to execute
+  sys_mod.unblock_cmd_stream();
+}
+
+
+comptime {
+  // Export symbol pointing to x, y so it is host-read/writeable
+  @export_symbol(x_ptr, "x");
+  @export_symbol(y_ptr, "y");
+
+  // Export function so it is host-callable by RPC mechanism
+  @export_symbol(compute);
+
+  // Create RPC server using color LAUNCH
+  @rpc(@get_data_task_id(sys_mod.LAUNCH));
+}
+

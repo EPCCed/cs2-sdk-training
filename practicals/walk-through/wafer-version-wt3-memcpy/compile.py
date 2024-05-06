@@ -5,8 +5,11 @@ from cerebras_appliance.sdk import SdkCompiler
 # Instantiate copmiler
 compiler = SdkCompiler()
 
-# Same arguments as for cslc before
-ARGS = "--fabric-dims=8,3 --fabric-offsets=4,1 -o out --memcpy --channels 1"
+# The full fabric dim is required when compiling for the wafer
+ARGS = "--fabric-dims=757,996 --fabric-offsets=4,1 -o out --memcpy --channels 1"
+
+# Use these for a simulator run 
+#ARGS = "--fabric-dims=8,3 --fabric-offsets=4,1 -o out --memcpy --channels 1"
 
 # Launch compile job
 artifact_id = compiler.compile(

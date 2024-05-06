@@ -16,7 +16,7 @@ with open("artifact_id.json", "r", encoding="utf8") as f:
 
 # Instantiate a runner object using a context manager.
 # Set simulator=False if running on CS system within appliance.
-with SdkRuntime(artifact_path, simulator=True) as runner:
+with SdkRuntime(artifact_path, simulator=False) as runner:
     # Get symbol for copying x, y onto and off device
     x_symbol = runner.get_id('x')
     y_symbol = runner.get_id('y')
